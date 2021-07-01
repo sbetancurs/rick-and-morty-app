@@ -1,9 +1,9 @@
-
-
+import CharactersList from 'components/CharactersList'
 export default function Home() {
+
   return (
     <>
-      <section className="introduction">
+      <section>
           <h1 className="title">
           Welcome to <a href="https://rickandmortyapi.com/">Rick and Morty App!</a>
           </h1>
@@ -11,18 +11,11 @@ export default function Home() {
             Let´s go to know more about the characters
           </p>
       </section>
-      <section className="characters">
-      <h1>section</h1>
-      </section>
+      <CharactersList />
       <style jsx>{`
-        .introduction{
+        section{
           background-color:#f0f0f0;
           padding: 5rem 0;
-        }
-
-        .characters{
-          background-color:#24282f;
-          height: 100%;
         }
 
         .title {
@@ -44,7 +37,8 @@ export default function Home() {
         .description {
           font-size: 1.5rem;
         }
-`}</style>
+      `}
+      </style>
     </>
   )
 }
