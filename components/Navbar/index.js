@@ -13,11 +13,11 @@ export default function Navbar() {
   return (
     <>
       <nav>
-        <a className='hidden'></a>
+        <a className='none'></a>
         <a href='#'>
           <Name width={nameWidth} />
         </a>
-        <a href='#' className='logo'>
+        <a href='#' className='none'>
           <Logo width='100' />
         </a>
       </nav>
@@ -29,15 +29,7 @@ export default function Navbar() {
           height: 100%;
           padding: 0rem 1rem;
           width: 100%;
-          justify-content: space-between;
-        }
-
-        justify-center {
           justify-content: center;
-        }
-
-        justify-between {
-          justify-content: space-between;
         }
 
         a {
@@ -45,8 +37,12 @@ export default function Navbar() {
           width: auto;
         }
 
-        a.hidden {
+        .hidden {
           visible: false;
+        }
+
+        .none {
+          display: none;
         }
 
         @media only screen and (max-width: 600px) {
