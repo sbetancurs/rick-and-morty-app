@@ -1,30 +1,25 @@
-import Head from 'next/head'
-import Navbar from "components/Navbar"
-import Footer from "components/Footer"
+import Navbar from "components/Navbar";
+import Footer from "components/Footer";
+import ScrollToTop from "components/ScrollToTop";
 
 type LayoutProps = {
-  children?: React.ReactNode
-}
+  children?: React.ReactNode;
+};
 
-const Layout = ({ children }:LayoutProps) => {
+const Layout = ({ children }: LayoutProps) => {
   return (
     <>
-      <Head>
-        <title>Rick and Morty App!</title>
-        <meta name="description" content="Rick and Morty App" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-      <body className="body">
-        <Navbar/>
+      <main id="main" className='main'>
+        <Navbar />
         {children}
-      </body>
-      <Footer />
+        <ScrollToTop />
+        <Footer />
+      </main>
       <style jsx>{`
-        body{
-          padding:0;
-          margin:0;
+        body {
+          padding: 0;
+          margin: 0;
         }
-      
       `}</style>
       <style jsx global>
         {`
@@ -32,11 +27,12 @@ const Layout = ({ children }:LayoutProps) => {
           body {
             padding: 0;
             margin: 0;
-            font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-              Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
+              Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue,
+              sans-serif;
           }
 
-          .body{
+          .main {
             display: flex;
             flex-direction: column;
           }
@@ -52,7 +48,7 @@ const Layout = ({ children }:LayoutProps) => {
         `}
       </style>
     </>
-  )
-}
+  );
+};
 
 export default Layout;

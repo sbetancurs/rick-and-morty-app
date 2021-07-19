@@ -13,12 +13,10 @@ const Footer = () => {
         footer {
           align-items: center;
           background-color:#202329;
-          bottom:0;
           color:#fff;
           display: flex;
           height: 70px;
           justify-content: center;
-          position:absolute;
           width: 100%;
         }
       `}</style>
