@@ -1,58 +1,110 @@
+import { useState, useEffect } from "react";
 import Introduction from "components/Introduction";
 import CharactersList from "components/CharactersList";
 
-type IHomeListProps = {
-  charactersList: TCharacter[];
+// @ts-ignore
+import { getCharacter } from "rickmortyapi";
+
+import { colors } from "../style/theme";
+
+type IApiAnswer = {
+  info: TInfo;
+  results: TCharacter[];
 };
 
-export default function Home({ charactersList }: IHomeListProps) {
+export default function Home() {
+  const [page, setPage] = useState(1);
+  const [response, setResponse] = useState({
+    info: {},
+    results: [] as TCharacter[],
+  } as IApiAnswer);
+
+  useEffect(() => {
+    getCharacter({ page: page }).then((res: IApiAnswer) => setResponse(res));
+  }, [page]);
+
+  const handleClick = (e: React.MouseEvent<HTMLElement>) => {
+    e.preventDefault();
+    const { name } = e.target as any;
+    switch (name) {
+      case "prev":
+        setPage(page - 1);
+        break;
+      case "next":
+        setPage(page + 1);
+        break;
+    }
+  };
+
   return (
     <>
       <Introduction />
+      <CharactersList charactersList={response.results} />
+      <div className='pagination'>
+        <button name='prev' onClick={handleClick} disabled={page === 1}>
+          Prev
+        </button>
+        <span className='index'>
+          {page} / {response.info.pages}
+        </span>
+        <button name='next' onClick={handleClick}>
+          Next
+        </button>
+      </div>
+      <style jsx>{`
+        .pagination {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 100%;
+          height: 100px;
+          background-color: ${colors.bg_Primary};
+        }
 
-      <section id='ch' className='characters'>
-        <div className='chTitle'>
-          <h1>Characters</h1>
-        </div>
-        <CharactersList charactersList={charactersList} />
-      </section>
+        button {
+          padding: 0.5rem 1.5rem;
+          margin: 0 1rem;
+          cursor: pointer;
+          border: 2px solid #fff;
+          border-radius: 2rem;
+          transition: transform 0.2s;
+          background: transparent;
+          color: #fff;
+          font-weight: bold;
+          font-style: oblique;
+          text-transform: uppercase;
+        }
 
-      <style jsx>
-        {`
-          .introduction {
-            background-color: #f0f0f0;
-            display: flex;
-            flex-direction: column;
-            height: 100%;
-            justify-content: center;
-            min-height: 500px;
-            padding: 5rem 2rem;
-            width: 100%;
+        button:disabled {
+          visibility: hidden;
+        }
+
+        button:hover:enabled {
+          animation: fill 0.5s linear forwards;
+          transform: scale(1.5);
+        }
+
+        .index {
+          color: #fff;
+          margin: 0 1rem;
+        }
+
+        @keyframes fill {
+          0% {
+            background-color: ${colors.bg_Primary};
+            border-radius: 1.5rem;
           }
-
-          .characters {
-            background-color: #24282f;
-            height: 100%;
-            color: #fff;
+          50% {
+            background-color: #016;
+            border-radius: 1rem;
           }
-
-          .chTitle {
-            text-align: center;
+          100% {
+            background-color: #fff;
+            color: #000;
+            border-radius: 0.5rem;
           }
-        `}
-      </style>
+        }
+      `}</style>
     </>
   );
 }
-
-export const getServerSideProps = async (context: any) => {
-  const res = await fetch("https://rickandmortyapi.com/api/character");
-  const data = await res.json();
-  const charactersList = data.results;
-
-  return {
-    props: {
-      charactersList,
-    },
-  };
-};

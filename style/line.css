@@ -1,0 +1,34 @@
+
+.line {
+  border-bottom: solid 2px #fff;
+  height: 40px;
+  position: relative;
+  width: 50%;
+  z-index: 1;
+}
+.arrow {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  height: 20px;
+  width: 80px;
+  z-index: 2;
+  background-color: #013;
+}
+.arrow .pin {
+  width: calc(50% + 5px);
+  height: 2px;
+  background: #fff;
+  display: inline-block;
+  float: left;
+  transform: rotate(25deg);
+  transform-origin: 0 0;
+}
+.arrow .pin:last-child {
+  transform: rotate(-25deg);
+  transform-origin: 100% 0;
+  float: right;
+  margin-top: -2px;
+}

@@ -7,7 +7,6 @@ type Json =
   | { [property: string]: Json }
   | Json[];
 
-type TProductId = string;
 
 type TCharacter = {
   id: number;
@@ -19,4 +18,11 @@ type TCharacter = {
     name: string;
   };
   episode: string[];
+};
+
+type TInfo = {
+  count: number;
+  pages: number;
+  next: ?string;
+  prev: ?string;
 };

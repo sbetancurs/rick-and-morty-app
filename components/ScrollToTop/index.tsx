@@ -45,7 +45,7 @@ export default function ScrollToTop() {
           border-radius: 50px;
           bottom: 40px;
           box-shadow: 2px 2px 3px #fff;
-          color: black;
+          color: white;
           cursor: pointer;
           height: 65px;
           position: fixed;
@@ -54,6 +54,29 @@ export default function ScrollToTop() {
           width: 65px;
           font-size: 4rem;
           padding-bottom: 0.5rem;
+          transform: scale(1);
+          animation: breathing 1.5s linear infinite normal;
+        }
+        @keyframes breathing {
+          0% {
+            -webkit-transform: scale(1);
+            transform: scale(1);
+          }
+
+          25% {
+            -webkit-transform: scale(1.2);
+            transform: scale(1.2);
+          }
+
+          60% {
+            -webkit-transform: scale(1.1);
+            transform: scale(1.1);
+          }
+
+          100% {
+            -webkit-transform: scale(1);
+            transform: scale(1);
+          }
         }
       `}</style>
     </>
