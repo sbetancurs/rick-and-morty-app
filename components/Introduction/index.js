@@ -1,25 +1,6 @@
+import Particles from "react-particles-js";
+
 const Introduction = () => {
-  const COUNT_OF_STARS = 30;
-  const starsArray = Array(COUNT_OF_STARS).fill("");
-
-  const createStar = (i) => {
-    const style = {
-      width: `calc(${Math.random() * 1.5 + 1} * 1px)`,
-      height: `calc(${Math.random() * 1.5 + 1} * 4px)`,
-      left: `calc(${Math.ceil(Math.random() * 100)} * 1vw)`,
-      animationDuration: `calc(${Math.random() * 2 + 1} * 1s)`,
-      animationDelay: `calc(${i * -0.05} * 1s)`,
-    };
-
-    return;
-  };
-
-  const getLeft = () => Math.ceil(Math.random() * 100);
-  const getSize = () => Math.random() * 1.5 + 1;
-  const getOpacity = () => Math.random() * 0.3 + 0.5;
-  const getDuration = () => Math.random() * 2 + 1;
-  const getDelay = (i) => i * -0.05;
-
   return (
     <>
       <section className='space'>
@@ -39,6 +20,50 @@ const Introduction = () => {
             <div className='pin'></div>
             <div className='pin'></div>
           </div>
+        </div>
+        <div className='particles'>
+          <Particles
+            params={{
+              particles: {
+                number: {
+                  value: 250,
+                },
+                size: {
+                  value: 3,
+                  random: true,
+                  anim: {
+                    speed: 4,
+                    size_min: 0.3,
+                  },
+                },
+                line_linked: {
+                  enable: false,
+                },
+                move: {
+                  random: true,
+                  speed: 1,
+                  direction: "top",
+                  out_mode: "out",
+                },
+              },
+              interactivity: {
+                events: {
+                  onhover: {
+                    enable: true,
+                    mode: "bubble",
+                  },
+                },
+                modes: {
+                  bubble: {
+                    distance: 150,
+                    duration: 2,
+                    size: 0,
+                    opacity: 0,
+                  },
+                },
+              },
+            }}
+          />
         </div>
       </section>
       <style jsx>{`
@@ -68,6 +93,14 @@ const Introduction = () => {
 
         .description {
           font-size: 1.5rem;
+        }
+
+        .particles {
+          left: 0;
+          top: 0;
+          width: 100%;
+          position: absolute;
+          z-index: -100;
         }
 
         .line {
