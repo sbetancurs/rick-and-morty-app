@@ -41,10 +41,10 @@ export default function ScrollToTop() {
           display: flex;
           align-items: center;
           justify-content: center;
-          background-color: #dfdba7;
+          background-color: midnightblue;
           border-radius: 50px;
           bottom: 40px;
-          box-shadow: 2px 2px 3px #999;
+          box-shadow: 2px 2px 3px #fff;
           color: black;
           cursor: pointer;
           height: 65px;

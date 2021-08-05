@@ -24,10 +24,9 @@ export default function Navbar() {
       <style jsx>{`
         nav {
           align-items: center;
-          background-color: #f0f0f0;
+          background-color: black;
           display: flex;
           height: 100%;
-          padding: 0rem 1rem;
           width: 100%;
           justify-content: center;
         }
