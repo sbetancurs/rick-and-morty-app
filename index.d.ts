@@ -19,10 +19,14 @@ type TCharacter = {
   };
   episode: string[];
 };
-
 type TInfo = {
   count: number;
   pages: number;
   next: ?string;
   prev: ?string;
+};
+type IField = {
+  inputProps: InputHTMLAttributes<HTMLInputElement>;
+  value: string;
+  onChange: ({ target }: any) => void;
 };

@@ -1,6 +1,6 @@
 import Navbar from "components/Navbar";
 import Footer from "components/Footer";
-import ScrollToTop from "components/ScrollToTop";
+import ScrollTo from "components/ScrollTo";
 
 type LayoutProps = {
   children?: React.ReactNode;
@@ -9,10 +9,10 @@ type LayoutProps = {
 const Layout = ({ children }: LayoutProps) => {
   return (
     <>
-      <main id="main" className='main'>
+      <main id='main' className='main'>
         <Navbar />
         {children}
-        <ScrollToTop />
+        <ScrollTo />
         <Footer />
       </main>
       <style jsx>{`

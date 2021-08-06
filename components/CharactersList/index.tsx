@@ -1,62 +1,65 @@
-import { useState, useEffect, lazy, Suspense } from "react";
+import { useState, useEffect } from "react";
 
-import { breakpoints, colors } from "../../style/theme";
+import { breakpoints, colors, fontSizes } from "../../style/theme";
 
 import Character from "components/Character";
 
 type ICharactersListProps = {
   charactersList: TCharacter[];
+  loading: boolean;
+  searchField: IField;
 };
 
-const CharactersList = (props: ICharactersListProps) => {
-  const [characters, setCharacters] = useState([] as TCharacter[]);
+const CharactersList = ({
+  charactersList,
+  loading,
+  searchField,
+}: ICharactersListProps) => {
+  const [characters, setCharacters] = useState(charactersList);
 
   useEffect(() => {
-    setCharacters(props.charactersList);
-  }, [props.charactersList]);
+    setCharacters(charactersList);
+  }, [charactersList]);
 
   return (
     <section className='characters'>
-      <div className='title'>
-        <h1>Characters</h1>
-      </div>
       <div className='wrapper'>
-        {characters &&
-          characters.map((character) => {
+        {characters
+          .filter((x) =>
+            x.name.toLowerCase().includes(searchField.value.toLowerCase())
+          )
+          .map((character) => {
             return <Character key={character.id} {...character} />;
           })}
       </div>
       <style jsx>{`
-        .title {
-          text-align: center;
-        }
-
         .characters {
           background-color: ${colors.bg_Primary};
+          min-height: 100vh;
           height: 100%;
           color: #fff;
-          padding: 3rem 0;
         }
 
         .wrapper {
           display: grid;
-          gap: 2rem;
+          gap: 1.5rem;
           grid-template-columns: repeat(1, minmax(100%, 1fr));
-
+          opacity: ${loading ? 0.5 : 1};
           padding-top: 1rem;
+          padding: 3rem;
         }
 
         @media (min-width: ${breakpoints.ipad}) and (max-width: ${breakpoints.pc}) {
           .wrapper {
             grid-template-columns: repeat(auto-fill, minmax(100%, 1fr));
+            padding: 3rem;
           }
         }
 
         @media (min-width: ${breakpoints.pc}) {
           .wrapper {
-            padding: 0 10rem;
-            grid-auto-rows: 15.5rem;
             grid-template-columns: repeat(2, minmax(20px, 1fr));
+            padding: 0 20rem;
           }
         }
       `}</style>

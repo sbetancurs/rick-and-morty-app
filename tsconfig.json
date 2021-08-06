@@ -15,6 +15,6 @@
     "jsx": "preserve",
     "baseUrl": "."
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "components/ScrollToTop/index.tsx", "components/Navbar/index.tsx", "pages/index.tsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "components/ScrollTo/index.tsx", "components/Navbar/index.tsx", "pages/index.tsx"],
   "exclude": ["node_modules"]
 }

@@ -1,29 +1,60 @@
 import { useState, useEffect } from "react";
+
 import Introduction from "components/Introduction";
 import CharactersList from "components/CharactersList";
+import Pagination from "components/Pagination";
+import Searcher from "components/Searcher";
+
+import { useField } from "../hooks/useField";
+import { fontSizes, colors } from "style/theme";
+import { statuses } from "../utils/enums";
 
 // @ts-ignore
 import { getCharacter } from "rickmortyapi";
 
-import { colors } from "../style/theme";
-
-type IApiAnswer = {
+type IResponse = {
   info: TInfo;
   results: TCharacter[];
+  loading: boolean;
 };
 
 export default function Home() {
   const [page, setPage] = useState(1);
+  const [filter, setFilter] = useState({} as TCharacter);
+  const [loading, setLoading] = useState(false);
   const [response, setResponse] = useState({
     info: {},
     results: [] as TCharacter[],
-  } as IApiAnswer);
+  } as IResponse);
+
+  const searchField: IField = useField({
+    type: "text",
+    name: "search",
+    placeholder: "Look for a character...",
+  });
+
+  const statusField: IField = useField({
+    name: "status",
+    placeholder: "estado",
+  });
+
+  const handleSearchClick = async (e: React.MouseEvent<HTMLElement>) => {
+    e.preventDefault();
+
+    setFilter({
+      name: searchField.value,
+      status: statusField.value,
+    } as TCharacter);
+  };
 
   useEffect(() => {
-    getCharacter({ page: page }).then((res: IApiAnswer) => setResponse(res));
-  }, [page]);
+    setLoading(true);
+    getCharacter({ ...filter, page: page })
+      .then((res: IResponse) => setResponse(res))
+      .then(() => setLoading(false));
+  }, [page, filter]);
 
-  const handleClick = (e: React.MouseEvent<HTMLElement>) => {
+  const handlePaginationClick = (e: React.MouseEvent<HTMLElement>) => {
     e.preventDefault();
     const { name } = e.target as any;
     switch (name) {
@@ -39,70 +70,65 @@ export default function Home() {
   return (
     <>
       <Introduction />
-      <CharactersList charactersList={response.results} />
-      <div className='pagination'>
-        <button name='prev' onClick={handleClick} disabled={page === 1}>
-          Prev
-        </button>
-        <span className='index'>
-          {page} / {response.info.pages}
-        </span>
-        <button name='next' onClick={handleClick}>
-          Next
-        </button>
-      </div>
+      <Searcher handleClick={handleSearchClick}>
+        <input {...searchField} />
+        <select {...statusField}>
+          <option value={statuses.alive}>Alive</option>
+          <option value={statuses.dead}>Dead</option>
+          <option value={statuses.unknown}>Unknown</option>
+        </select>
+      </Searcher>
+      {response.info && (
+        <>
+          <CharactersList
+            charactersList={response.results}
+            loading={loading}
+            searchField={searchField}
+          />
+          <Pagination
+            page={page}
+            totalPages={response.info.pages}
+            handleClick={handlePaginationClick}
+          />
+        </>
+      )}
+      {!response.info && (
+        <div className='noCharacters'>
+          <p>There is no characters to show.</p>
+        </div>
+      )}
       <style jsx>{`
-        .pagination {
+        .noCharacters {
           display: flex;
-          align-items: center;
           justify-content: center;
-          width: 100%;
-          height: 100px;
-          background-color: ${colors.bg_Primary};
-        }
-
-        button {
-          padding: 0.5rem 1.5rem;
-          margin: 0 1rem;
-          cursor: pointer;
-          border: 2px solid #fff;
-          border-radius: 2rem;
-          transition: transform 0.2s;
-          background: transparent;
+          align-items: start;
+          padding-bottom: ;
+          background: ${colors.bg_Primary};
+          font-size: ${fontSizes.font_size_sm};
           color: #fff;
-          font-weight: bold;
-          font-style: oblique;
-          text-transform: uppercase;
+          min-height: 50vh;
+        }
+        input {
+          background-color: white;
+          color: black;
+          border-color: #fff;
+          height: 65px;
+          font-size: ${fontSizes.font_size_sm};
+          border-top-left-radius: 25px;
+          border-bottom-left-radius: 25px;
+          padding: 0 1rem;
+          width: 700px;
+          margin-right: 0.2rem;
         }
 
-        button:disabled {
-          visibility: hidden;
-        }
-
-        button:hover:enabled {
-          animation: fill 0.5s linear forwards;
-          transform: scale(1.5);
-        }
-
-        .index {
-          color: #fff;
-          margin: 0 1rem;
-        }
-
-        @keyframes fill {
-          0% {
-            background-color: ${colors.bg_Primary};
-            border-radius: 1.5rem;
-          }
-          50% {
-            background-color: #016;
-            border-radius: 1rem;
-          }
-          100% {
-            background-color: #fff;
-            color: #000;
-            border-radius: 0.5rem;
-          }
+        select {
+          background-color: white;
+          color: black;
+          border-color: #fff;
+          height: 65px;
+          font-size: ${fontSizes.font_size_sm};
+          padding: 0 1rem;
+          margin-right: 0.2rem;
         }
       `}</style>
     </>

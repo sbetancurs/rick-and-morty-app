@@ -1,4 +1,5 @@
 import { breakpoints } from "../../style/theme";
+import { statuses } from "../../utils/enums";
 
 /* eslint-disable @next/next/no-img-element */
 const Character = (character: TCharacter) => {
@@ -9,9 +10,9 @@ const Character = (character: TCharacter) => {
 
   const getStatusColorClass = (status: string) => {
     switch (status) {
-      case "dead":
+      case statuses.dead:
         return { backgroundColor: "red" };
-      case "alive":
+      case statuses.alive:
         return { backgroundColor: "green" };
       default:
         return { backgroundColor: "gray" };
@@ -21,10 +22,12 @@ const Character = (character: TCharacter) => {
   return (
     <>
       <div className='container'>
-        <img
-          src={character.image}
-          alt={`${character.id}_${character.name.split(" ")[0]}`}
-        />
+        <div className='img'>
+          <img
+            src={character.image}
+            alt={`${character.id}_${character.name.split(" ")[0]}`}
+          />
+        </div>
         <div className='characterInfo'>
           <h2>{character.name}</h2>
 
@@ -50,21 +53,29 @@ const Character = (character: TCharacter) => {
           justify-content: start;
           background-color: #3c3e44;
           width: 100%;
-          height: max-content;
           border-radius: 0.5rem;
           padding-bottom: 1rem;
         }
 
+        .img,
         img {
-          height: 250px;
           border-top-left-radius: 0.5rem;
           border-top-right-radius: 0.5rem;
+        }
+
+        .img {
+          min-width: 30%;
+        }
+        img {
+          width: 100%;
           object-position: center center;
           object-fit: fit;
         }
 
         .characterInfo {
           padding: 0 1rem;
+          width: 70%;
+          min-height: 100%;
         }
 
         .characterInfo h2,
@@ -96,15 +107,18 @@ const Character = (character: TCharacter) => {
             flex-direction: row;
             justify-content: start;
             width: 100%;
-            height: 250px;
             padding-bottom: 0;
           }
 
           img {
+            height: 100%;
+          }
+
+          .img,
+          img {
             border-top-left-radius: 0.5rem;
             border-bottom-left-radius: 0.5rem;
             border-top-right-radius: 0;
-            object-position: left center;
           }
         }
 
@@ -112,15 +126,20 @@ const Character = (character: TCharacter) => {
           .container {
             flex-direction: row;
             justify-content: start;
-            width: 100%;
             padding-bottom: 0;
+            min-height: 250px;
           }
 
+          .img,
           img {
             border-top-left-radius: 0.5rem;
             border-bottom-left-radius: 0.5rem;
             border-top-right-radius: 0;
-            object-position: left center;
+          }
+
+          img {
+            width: 100%;
+            height: 100%;
           }
         }
       `}</style>

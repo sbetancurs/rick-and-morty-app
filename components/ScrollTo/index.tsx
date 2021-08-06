@@ -1,24 +1,34 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
+import { breakpoints } from "../../style/theme";
 
-export default function ScrollToTop() {
-  const [isVisible, setIsVisible] = useState(false);
+export default function ScrollTo() {
+  const [visible, setVisible] = useState(true);
+  const [end, setEnd] = useState(false);
 
   // Show button when page is scorlled upto given distance
   const toggleVisibility = () => {
-    if (window.scrollY > 50) {
-      setIsVisible(true);
-    } else {
-      setIsVisible(false);
+    //@ts-ignore
+    const maxY = window.scrollMaxY;
+    if (window.scrollY < maxY) {
+      setVisible(true);
+      setEnd(false);
+    } else if (window.scrollY === maxY) {
+      setVisible(true);
+      setEnd(true);
     }
   };
 
-  // Set the top cordinate to 0
-  // make scrolling smooth
-  const scrollToTop = () => {
+  const scrollTo = () => {
+    //@ts-ignore
+    let scroll = window.scrollMaxY;
+    if (window.scrollY === scroll) {
+      scroll = 0;
+    }
+
     window &&
       window.scrollTo({
-        top: 0,
+        top: scroll,
         behavior: "smooth",
       });
   };
@@ -29,33 +39,33 @@ export default function ScrollToTop() {
 
   return (
     <>
-      <div className='scroll-to-top'>
-        {isVisible && (
-          <a onClick={scrollToTop} className='float'>
-            ☝
+      <div className='scroll'>
+        {visible && (
+          <a onClick={scrollTo} className='float'>
+            {end ? "☝️" : "👇"}
           </a>
         )}
       </div>
       <style jsx>{`
         .float {
-          display: flex;
           align-items: center;
-          justify-content: center;
+          animation: breathing 1.5s linear infinite normal;
           background-color: midnightblue;
           border-radius: 50px;
           bottom: 40px;
           box-shadow: 2px 2px 3px #fff;
           color: white;
           cursor: pointer;
+          display: flex;
+          font-size: 3rem;
           height: 65px;
+          justify-content: center;
+          padding-bottom: 0.5rem;
           position: fixed;
           right: 40px;
           text-align: center;
-          width: 65px;
-          font-size: 4rem;
-          padding-bottom: 0.5rem;
           transform: scale(1);
-          animation: breathing 1.5s linear infinite normal;
+          width: 65px;
         }
         @keyframes breathing {
           0% {
@@ -76,6 +86,15 @@ export default function ScrollToTop() {
           100% {
             -webkit-transform: scale(1);
             transform: scale(1);
+          }
+        }
+
+        @media (max-width: ${breakpoints.pc}) {
+          .float {
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            font-size: 2rem;
           }
         }
       `}</style>
