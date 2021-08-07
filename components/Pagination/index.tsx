@@ -13,7 +13,6 @@ const Pagination = ({
   handleClick,
   loading,
 }: IPaginationProps) => {
-  console.log(page + "of" + totalPages);
   return (
     <>
       <div className='pagination'>
