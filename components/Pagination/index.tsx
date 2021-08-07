@@ -4,19 +4,34 @@ type IPaginationProps = {
   page: number;
   totalPages: number;
   handleClick: (e: React.MouseEvent<HTMLElement>) => void;
+  loading: boolean;
 };
 
-const Pagination = ({ page, totalPages, handleClick }: IPaginationProps) => {
+const Pagination = ({
+  page,
+  totalPages,
+  handleClick,
+  loading,
+}: IPaginationProps) => {
+  console.log(page + "of" + totalPages);
   return (
     <>
       <div className='pagination'>
-        <button name='prev' onClick={handleClick} disabled={page === 1}>
+        <button
+          name='prev'
+          onClick={handleClick}
+          disabled={page === 1 || loading}
+        >
           Prev
         </button>
         <span className='index'>
-          {page} / {totalPages}
+          {page} of {totalPages}
         </span>
-        <button name='next' onClick={handleClick}>
+        <button
+          name='next'
+          onClick={handleClick}
+          disabled={page === totalPages || loading}
+        >
           Next
         </button>
       </div>
@@ -43,14 +58,18 @@ const Pagination = ({ page, totalPages, handleClick }: IPaginationProps) => {
           font-style: oblique;
           text-transform: uppercase;
         }
-
-        button:disabled {
-          visibility: hidden;
-        }
-
         button:hover:enabled {
           animation: fill 0.5s linear forwards;
           transform: scale(1.5);
+        }
+
+        button:disabled {
+          opacity: 0.6;
+          visibility: hidden;
+        }
+
+        button:hover:disabled {
+          cursor: default;
         }
 
         .index {

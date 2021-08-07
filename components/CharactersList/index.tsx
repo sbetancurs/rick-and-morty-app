@@ -35,7 +35,7 @@ const CharactersList = ({
       <style jsx>{`
         .characters {
           background-color: ${colors.bg_Primary};
-          min-height: 100vh;
+          min-height: 50vh;
           height: 100%;
           color: #fff;
         }
@@ -59,7 +59,7 @@ const CharactersList = ({
         @media (min-width: ${breakpoints.pc}) {
           .wrapper {
             grid-template-columns: repeat(2, minmax(20px, 1fr));
-            padding: 0 20rem;
+            padding: 0 15rem;
           }
         }
       `}</style>

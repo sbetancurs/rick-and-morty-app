@@ -6,8 +6,8 @@ import Pagination from "components/Pagination";
 import Searcher from "components/Searcher";
 
 import { useField } from "../hooks/useField";
-import { fontSizes, colors } from "style/theme";
-import { statuses } from "../utils/enums";
+import { fontSizes, colors, breakpoints } from "style/theme";
+import { statuses, species } from "../utils/enums";
 
 // @ts-ignore
 import { getCharacter } from "rickmortyapi";
@@ -31,11 +31,16 @@ export default function Home() {
     type: "text",
     name: "search",
     placeholder: "Look for a character...",
+    disabled: loading,
   });
 
   const statusField: IField = useField({
     name: "status",
-    placeholder: "estado",
+    disabled: loading,
+  });
+  const specieField: IField = useField({
+    name: "specie",
+    disabled: loading,
   });
 
   const handleSearchClick = async (e: React.MouseEvent<HTMLElement>) => {
@@ -44,6 +49,7 @@ export default function Home() {
     setFilter({
       name: searchField.value,
       status: statusField.value,
+      species: specieField.value,
     } as TCharacter);
   };
 
@@ -70,12 +76,23 @@ export default function Home() {
   return (
     <>
       <Introduction />
-      <Searcher handleClick={handleSearchClick}>
+      <Searcher handleClick={handleSearchClick} loading={loading}>
         <input {...searchField} />
+        <select {...specieField}>
+          <option value=''>All Species</option>
+          {Object.entries(species).map(([key, value]) => (
+            <option key={key} value={value}>
+              {value}
+            </option>
+          ))}
+        </select>
         <select {...statusField}>
-          <option value={statuses.alive}>Alive</option>
-          <option value={statuses.dead}>Dead</option>
-          <option value={statuses.unknown}>Unknown</option>
+          <option value=''>All Status</option>
+          {Object.entries(statuses).map(([key, value]) => (
+            <option key={key} value={value}>
+              {value}
+            </option>
+          ))}
         </select>
       </Searcher>
       {response.info && (
@@ -89,6 +106,7 @@ export default function Home() {
             page={page}
             totalPages={response.info.pages}
             handleClick={handlePaginationClick}
+            loading={loading}
           />
         </>
       )}
@@ -102,33 +120,77 @@ export default function Home() {
           display: flex;
           justify-content: center;
           align-items: start;
-          padding-bottom: ;
+          text-align: center;
           background: ${colors.bg_Primary};
           font-size: ${fontSizes.font_size_sm};
           color: #fff;
           min-height: 50vh;
         }
-        input {
+        input[type="text"] {
           background-color: white;
           color: black;
           border-color: #fff;
-          height: 65px;
-          font-size: ${fontSizes.font_size_sm};
-          border-top-left-radius: 25px;
-          border-bottom-left-radius: 25px;
-          padding: 0 1rem;
-          width: 700px;
-          margin-right: 0.2rem;
+          height: 40px;
+          font-size: ${fontSizes.font_size_xs};
+          padding: 0 0.5rem;
+          width: 100%;
         }
 
+        input[type="text"]:focus,
+        select:focus {
+          outline: none;
+        }
+
+        input[type="text"]:disabled {
+          opacity: 0.6;
+        }
         select {
           background-color: white;
           color: black;
           border-color: #fff;
-          height: 65px;
-          font-size: ${fontSizes.font_size_sm};
+          height: 50px;
+          font-size: ${fontSizes.font_size_xs};
           padding: 0 1rem;
-          margin-right: 0.2rem;
+          margin-top: 0.5rem;
+          width: 100%;
+        }
+
+        @media (min-width: ${breakpoints.ipad}) and (max-width: ${breakpoints.pc}) {
+          input[type="text"] {
+            height: 65px;
+            font-size: ${fontSizes.font_size_sm};
+            padding: 0 1rem;
+            width: 100%;
+            margin-right: 0.2rem;
+          }
+
+          select {
+            height: 65px;
+            font-size: ${fontSizes.font_size_sm};
+          }
+        }
+
+        @media (min-width: ${breakpoints.pc}) {
+          input[type="text"] {
+            border-top-left-radius: 25px;
+            border-bottom-left-radius: 25px;
+            height: 65px;
+            font-size: ${fontSizes.font_size_sm};
+            padding: 0 1rem;
+            width: 700px;
+            margin-right: 0.2rem;
+          }
+
+          select {
+            height: 65px;
+            font-size: ${fontSizes.font_size_sm};
+            width: max-content;
+          }
+
+          select {
+            margin: 0;
+            margin-right: 0.2rem;
+          }
         }
       `}</style>
     </>

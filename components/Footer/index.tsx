@@ -1,26 +1,35 @@
+import { fontSizes, colors, breakpoints } from "style/theme";
 const Footer = () => {
-  return <>
-    <footer>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '} Sebastian Betancur
-        </a>
-    </footer>
-    <style jsx>{`
+  return (
+    <>
+      <footer>
+        <p>Powered by Sebastian Betancur</p>
+      </footer>
+      <style jsx>{`
         footer {
           align-items: center;
-          background-color:#202329;
-          color:#fff;
+          background-color: #202329;
+          color: #fff;
           display: flex;
-          height: 70px;
+          height: 120px;
           justify-content: center;
           width: 100%;
         }
+
+        @media (min-width: ${breakpoints.ipad}) and (max-width: ${breakpoints.pc}) {
+          footer {
+            height: 70px;
+          }
+        }
+
+        @media (min-width: ${breakpoints.pc}) {
+          footer {
+            height: 70px;
+          }
+        }
       `}</style>
     </>
-}
+  );
+};
 
 export default Footer;

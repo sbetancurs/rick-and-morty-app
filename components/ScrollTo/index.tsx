@@ -1,27 +1,27 @@
 /* eslint-disable react-hooks/exhaustive-deps */
+// @ts-nocheck
 import React, { useEffect, useState } from "react";
 import { breakpoints } from "../../style/theme";
 
 export default function ScrollTo() {
-  const [visible, setVisible] = useState(true);
   const [end, setEnd] = useState(false);
 
-  // Show button when page is scorlled upto given distance
+  useEffect(() => {
+    window.addEventListener("scroll", toggleVisibility);
+  }, []);
+
   const toggleVisibility = () => {
-    //@ts-ignore
-    const maxY = window.scrollMaxY;
+    const maxY = getMaxY();
+
     if (window.scrollY < maxY) {
-      setVisible(true);
       setEnd(false);
     } else if (window.scrollY === maxY) {
-      setVisible(true);
       setEnd(true);
     }
   };
 
   const scrollTo = () => {
-    //@ts-ignore
-    let scroll = window.scrollMaxY;
+    let scroll = getMaxY();
     if (window.scrollY === scroll) {
       scroll = 0;
     }
@@ -33,18 +33,17 @@ export default function ScrollTo() {
       });
   };
 
-  useEffect(() => {
-    window.addEventListener("scroll", toggleVisibility);
-  }, []);
+  const getMaxY = () =>
+    window.scrollMaxY ||
+    document.documentElement.scrollHeight -
+      document.documentElement.clientHeight;
 
   return (
     <>
       <div className='scroll'>
-        {visible && (
-          <a onClick={scrollTo} className='float'>
-            {end ? "☝️" : "👇"}
-          </a>
-        )}
+        <a onClick={scrollTo} className='float'>
+          {end ? "☝️" : "👇"}
+        </a>
       </div>
       <style jsx>{`
         .float {
